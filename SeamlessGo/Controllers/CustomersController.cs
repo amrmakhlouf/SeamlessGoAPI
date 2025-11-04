@@ -92,7 +92,7 @@ namespace SeamlessGo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while creating the customer.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while creating the customerError.", error = ex.Message });
             }
         }
 
