@@ -1,0 +1,6 @@
+@SeamlessGo_HostAddress = http://localhost:5253
+
+GET {{SeamlessGo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
