@@ -16,13 +16,21 @@ namespace SeamlessGo.Data
             _orderLineRepository = orderLineRepository;
         }
 
-        public async Task<IEnumerable<Orders>> GetAllAsync()
+        public async Task<IEnumerable<Order>> GetAllAsync(DateTime? LastModifiedUtc)
         {
-            var orders = new List<Orders>();
+            var orders = new List<Order>();
 
             using var connection = new SqlConnection(_connectionString);
-            using var command = new SqlCommand("SELECT * FROM dbo.Orders ORDER BY OrderID DESC", connection);
+            var query = "SELECT * FROM dbo.Orders where 1=1 ";
+            if (LastModifiedUtc.HasValue) { query += "and LastModifiedUtc > @LastModifiedUtc "; }
+            query += " ORDER BY OrderDate DESC";
 
+            using var command = new SqlCommand(query, connection);
+
+            if (LastModifiedUtc.HasValue)
+            {
+                command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = LastModifiedUtc;
+            }
             await connection.OpenAsync();
             using var reader = await command.ExecuteReaderAsync();
 
@@ -34,7 +42,7 @@ namespace SeamlessGo.Data
             return orders;
         }
 
-        public async Task<Orders?> GetByIdAsync(string id)
+        public async Task<Order?> GetByIdAsync(string id)
         {
             using var connection = new SqlConnection(_connectionString);
             using var command = new SqlCommand("SELECT * FROM dbo.Orders WHERE OrderID = @OrderID", connection);
@@ -52,7 +60,7 @@ namespace SeamlessGo.Data
             return null;
         }
 
-        public async Task<Orders?> GetByIdWithLinesAsync(string id)
+        public async Task<Order?> GetByIdWithLinesAsync(string id)
         {
             var order = await GetByIdAsync(id);
 
@@ -64,17 +72,17 @@ namespace SeamlessGo.Data
             return order;
         }
 
-        public async Task<Orders> CreateAsync(Orders order, List<OrderLines>? orderLines)
+        public async Task<Order> CreateAsync(Order order, List<OrderLine>? orderLines)
         {
             const string sql = @"
                 INSERT INTO dbo.Orders 
                 (OrderID,CustomerID, OrderDate, UpdatedDate, OrderTypeID, SubTotal, TotalAmount, GrossAmount, 
                  TotalRemainingAmount, DiscountAmount, DiscountPerc, NetAmount, Tax, TaxPerc, 
-                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceOrderID,SyncStatus)
+                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceOrderID,SyncStatus,LastModifiedUtc)
                 VALUES 
                 (@OrderID,@CustomerID, @OrderDate, @UpdateDate, @OrderTypeID,@SubTotal, @TotalAmount, @GrossAmount,
                  @TotalRemainingAmount, @DiscountAmount, @DiscountPerc, @NetAmount, @Tax, @TaxPerc,
-                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@SyncStatus);
+                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@SyncStatus,@LastModifiedUtc);
                 ";
 
             using var connection = new SqlConnection(_connectionString);
@@ -139,7 +147,7 @@ namespace SeamlessGo.Data
 
         // Private helper method - not part of interface
         // Used internally by CreateAsync to insert order lines
-        private async Task CreateOrderLineAsync(SqlConnection connection, SqlTransaction transaction, OrderLines line)
+        private async Task CreateOrderLineAsync(SqlConnection connection, SqlTransaction transaction, OrderLine line)
         {
 
             const string sql = @"
@@ -170,9 +178,9 @@ namespace SeamlessGo.Data
 
         }
 
-        private static Orders MapReaderToOrder(SqlDataReader reader)
+        private static Order MapReaderToOrder(SqlDataReader reader)
         {
-            return new Orders
+            return new Order
             {
 
                 OrderID = reader.IsDBNull("OrderID") ? null : reader.GetString("OrderID"),
@@ -201,10 +209,12 @@ namespace SeamlessGo.Data
 
 
                 // ✅ tinyint -> byte -> int
-                SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus")
+                SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus"),
+                LastModifiedUtc = reader.IsDBNull("LastModifiedUtc") ? DateTime.MinValue : reader.GetDateTime("LastModifiedUtc")
+
             };  
           }
-        private static void AddOrderParameters(SqlCommand command, Orders order)
+        private static void AddOrderParameters(SqlCommand command, Order order)
 
         {
             command.Parameters.Add("@OrderID", SqlDbType.NVarChar).Value = order.OrderID ?? (object)DBNull.Value;
@@ -228,6 +238,8 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@Note", SqlDbType.NVarChar).Value = order.Note ?? (object)DBNull.Value;
             command.Parameters.Add("@InvoicedID", SqlDbType.NVarChar).Value = order.InvoicedID ?? (object)DBNull.Value;
             command.Parameters.Add("@SyncStatus", SqlDbType.NVarChar).Value = order.SyncStatus ?? (object)DBNull.Value;
+            command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = order.LastModifiedUtc ?? (object)DBNull.Value;
+
         }
     }
 }

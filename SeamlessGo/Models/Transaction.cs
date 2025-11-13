@@ -23,6 +23,7 @@
         public string? Note { get; set; }
         public string? SourceTransactionID { get; set; }
         public string? SourceOrderID { get; set; }
+        public DateTime? LastModifiedUtc { get; set; }
         public int? SyncStatus { get; set; }
 
         // Navigation property (not mapped to database)

@@ -1,6 +1,6 @@
 ﻿namespace SeamlessGo.Models
 {
-    public class Orders
+    public class Order
     {
         public string? OrderID { get; set; }
         public string? CustomerID { get; set; }
@@ -23,8 +23,9 @@
         public string? Note { get; set; }
         public string? InvoicedID { get; set; }
         public int? SyncStatus { get; set; }
+        public DateTime? LastModifiedUtc { get; set; }
 
         // Navigation property (not mapped to database)
-        public List<OrderLines>? OrderLines { get; set; }
+        public List<OrderLine>? OrderLines { get; set; }
     }
 }

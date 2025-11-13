@@ -23,6 +23,7 @@
         public string? Note { get; set; }
         public string? InvoicedID { get; set; }
         public int? SyncStatus { get; set; }
+        public DateTime? LastModifiedUtc { get; set; }
 
 
         // Include order lines in response

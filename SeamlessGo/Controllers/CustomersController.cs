@@ -50,7 +50,7 @@ namespace SeamlessGo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving the customerTestingGitHubNow I need To Try Fetch I changed It again to learn Fetch.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while retrieving the customer.", error = ex.Message });
             }
         }
 

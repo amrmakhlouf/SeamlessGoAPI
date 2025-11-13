@@ -21,11 +21,12 @@ namespace SeamlessGo.Controllers
 
             // GET: api/Transactions
             [HttpGet]
-            public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions()
+            public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactions([FromQuery] DateTime? LastModifiedUtc)
+
             {
                 try
                 {
-                    var Transactions = await _TransactionRepository.GetAllAsync();
+                    var Transactions = await _TransactionRepository.GetAllAsync(LastModifiedUtc);
                     var TransactionDtos = Transactions.Select(MapTransactionToDto);
                     return Ok(TransactionDtos);
                 }
@@ -83,7 +84,8 @@ namespace SeamlessGo.Controllers
                         Note = createTransactionDto.Note,
                         IsVoided = createTransactionDto.IsVoided,
                         SourceTransactionID = createTransactionDto.SourceTransactionID,
-                        SyncStatus=createTransactionDto.SyncStatus
+                        SyncStatus=createTransactionDto.SyncStatus,
+                        LastModifiedUtc=createTransactionDto.LastModifiedUtc
                     };
 
                     // Convert CreateTransactionLineDto to TransactionLine
@@ -227,6 +229,7 @@ namespace SeamlessGo.Controllers
                     SourceTransactionID = Transaction.SourceTransactionID,
                     SourceOrderID = Transaction.SourceOrderID,
                     SyncStatus = Transaction.SyncStatus,
+                    LastModifiedUtc=Transaction.LastModifiedUtc,
                     TransactionLine = Transaction.TransactionLine?.Select(line => new TransactionLineDTO
                     {
                         TransactionLineID = line.TransactionLineID,

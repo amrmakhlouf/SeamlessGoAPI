@@ -3,7 +3,6 @@
     public class CreateStockTransactionLineDTO
     {
         public string StockTransactionLineID { get; set; }
-        public string? StockTransactionID { get; set; }
         public string? ItemPackID { get; set; }
         public int? Quantity { get; set; }
         public decimal? Coast { get; set; }

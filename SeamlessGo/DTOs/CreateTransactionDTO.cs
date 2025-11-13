@@ -27,6 +27,7 @@ namespace SeamlessGo.DTOs
         public string? SourceTransactionID { get; set; }
         public string? SourceOrderID { get; set; }
         public int? SyncStatus { get; set; }
+        public DateTime? LastModifiedUtc { get; set; }
 
         // Navigation property (not mapped to database)
         public List<CreateTransactionLineDTO>? TransactionLine { get; set; }

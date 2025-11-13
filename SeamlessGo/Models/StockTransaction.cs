@@ -27,6 +27,7 @@ namespace SeamlessGo.Models
         public int? RouteID { get; set; }
         public int? CreatedByUserID { get; set; }
         public int? SyncStatus { get; set; }
+        public DateTime? LastModifiedUtc { get; set; }
         public List<StockTransactionLine>? StockTransactionLine { get; set; }
     }
 }

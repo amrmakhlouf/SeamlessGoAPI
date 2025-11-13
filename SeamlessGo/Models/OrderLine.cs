@@ -1,6 +1,6 @@
 ﻿namespace SeamlessGo.Models
 {
-    public class OrderLines
+    public class OrderLine
     {
         public string OrderLineID { get; set; }
         public string? OrderID { get; set; }

@@ -21,11 +21,11 @@ namespace SeamlessGo.Controllers
 
             // GET: api/orders
             [HttpGet]
-            public async Task<ActionResult<IEnumerable<OrderDtocs>>> GetOrders()
+            public async Task<ActionResult<IEnumerable<OrderDtocs>>> GetOrders([FromQuery] DateTime? LastModifiedUtc)
             {
                 try
                 {
-                    var orders = await _orderRepository.GetAllAsync();
+                    var orders = await _orderRepository.GetAllAsync(LastModifiedUtc);
                     var orderDtos = orders.Select(MapOrderToDto);
                     return Ok(orderDtos);
                 }
@@ -62,7 +62,7 @@ namespace SeamlessGo.Controllers
             {
                 try
                 {
-                    var order = new Orders
+                    var order = new Order
                     {
                         OrderID = createOrderDto.OrderID,
                         CustomerID = createOrderDto.CustomerID,
@@ -83,14 +83,15 @@ namespace SeamlessGo.Controllers
                         Note = createOrderDto.Note,
                         IsVoided = createOrderDto.IsVoided,
                         InvoicedID = createOrderDto.SourceOrderID,
-                        SyncStatus=createOrderDto.SyncStatus
+                        LastModifiedUtc = createOrderDto.LastModifiedUtc,
+                        SyncStatus =createOrderDto.SyncStatus
                     };
 
                     // Convert CreateOrderLineDto to OrderLine
-                    List<OrderLines>? orderLines = null;
+                    List<OrderLine>? orderLines = null;
                     if (createOrderDto.OrderLines != null && createOrderDto.OrderLines.Any())
                     {
-                        orderLines = createOrderDto.OrderLines.Select(dto => new OrderLines
+                        orderLines = createOrderDto.OrderLines.Select(dto => new OrderLine
                         {
                             OrderLineID = dto.OrderLineID,
                             ItemPackID = dto.ItemPackID,
@@ -201,7 +202,7 @@ namespace SeamlessGo.Controllers
             //    }
         //    }
 
-            private static OrderDtocs MapOrderToDto(Orders order)
+            private static OrderDtocs MapOrderToDto(Order order)
             {
                 return new OrderDtocs
                 {
@@ -225,6 +226,7 @@ namespace SeamlessGo.Controllers
                     IsVoided = order.IsVoided,
                     Note = order.Note,
                     InvoicedID = order.InvoicedID,
+                    LastModifiedUtc=order.LastModifiedUtc,
                     OrderLines = order.OrderLines?.Select(line => new OrderLineDto
                     {
                         OrderLineID = line.OrderLineID,

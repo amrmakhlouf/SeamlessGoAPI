@@ -14,9 +14,9 @@ namespace SeamlessGo.Data
                 ?? throw new ArgumentException("Connection string not found");
         }
 
-        public async Task<IEnumerable<OrderLines>> GetByOrderIdAsync(string orderId)
+        public async Task<IEnumerable<OrderLine>> GetByOrderIdAsync(string orderId)
         {
-            var orderLines = new List<OrderLines>();
+            var orderLines = new List<OrderLine>();
 
             using var connection = new SqlConnection(_connectionString);
             using var command = new SqlCommand(
@@ -36,7 +36,7 @@ namespace SeamlessGo.Data
             return orderLines;
         }
 
-        public async Task<OrderLines> CreateAsync(OrderLines orderLine)
+        public async Task<OrderLine> CreateAsync(OrderLine orderLine)
         {
 
         //
@@ -78,9 +78,9 @@ namespace SeamlessGo.Data
 
        
 
-        private static OrderLines MapReaderToOrderLine(SqlDataReader reader)
+        private static OrderLine MapReaderToOrderLine(SqlDataReader reader)
         {
-            return new OrderLines
+            return new OrderLine
             {
                 OrderLineID = reader.IsDBNull("OrderLineID") ? null : reader.GetString("OrderLineID"),
 
@@ -99,7 +99,7 @@ namespace SeamlessGo.Data
             };
         }
 
-        private static void AddOrderLineParameters(SqlCommand command, OrderLines line)
+        private static void AddOrderLineParameters(SqlCommand command, OrderLine line)
         {
             command.Parameters.Add("@OrderLineID", SqlDbType.NVarChar, 450).Value =
        line.OrderLineID ?? (object)DBNull.Value;

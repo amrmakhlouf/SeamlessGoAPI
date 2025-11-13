@@ -7,11 +7,11 @@ namespace SeamlessGo.Controllers
 {
  [ApiController]
     [Route("api/[controller]")]
-    public class ItemsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IitemRepository _itemRepository;
 
-        public ItemsController(IitemRepository itemRepository)
+        public ProductsController(IitemRepository itemRepository)
         {
             _itemRepository = itemRepository;
         }

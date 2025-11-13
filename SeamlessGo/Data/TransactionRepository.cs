@@ -16,13 +16,25 @@ namespace SeamlessGo.Data
             _TransactionLineRepository = TransactionLineRepository;
         }
 
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        public async Task<IEnumerable<Transaction>> GetAllAsync(DateTime? LastModifiedUtc)
         {
             var Transactions = new List<Transaction>();
 
             using var connection = new SqlConnection(_connectionString);
-            using var command = new SqlCommand("SELECT * FROM dbo.Transactions Transaction BY TransactionID DESC", connection);
 
+            var query = "SELECT * FROM dbo.Transactions WHERE 1=1";
+            if (LastModifiedUtc.HasValue)
+            {
+                query += " AND LastModifiedUtc > @LastModifiedUtc";
+            }
+            query += " ORDER BY TransactionID DESC";
+            using var command = new SqlCommand(query, connection);
+
+            //using var command = new SqlCommand("SELECT * FROM dbo.Transactions  where 1=1 and  Transaction BY TransactionID DESC", connection);
+            if (LastModifiedUtc.HasValue)
+            {
+                command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = LastModifiedUtc.Value;
+            }
             await connection.OpenAsync();
             using var reader = await command.ExecuteReaderAsync();
 
@@ -70,11 +82,11 @@ namespace SeamlessGo.Data
                 INSERT INTO dbo.Transactions 
                 (TransactionID,CustomerID, TransactionDate, UpdatedDate, TransactionTypeID, SubTotal, TotalAmount, GrossAmount, 
                  TotalRemainingAmount, DiscountAmount, DiscountPerc, NetAmount, Tax, TaxPerc, 
-                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceTransactionID,SyncStatus)
+                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceTransactionID,SyncStatus,LastModifiedUtc)
                 VALUES 
                 (@TransactionID,@CustomerID, @TransactionDate, @UpdateDate, @TransactionTypeID,@SubTotal, @TotalAmount, @GrossAmount,
                  @TotalRemainingAmount, @DiscountAmount, @DiscountPerc, @NetAmount, @Tax, @TaxPerc,
-                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@SyncStatus);
+                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@SyncStatus,@LastModifiedUtc);
                 ";
 
             using var connection = new SqlConnection(_connectionString);
@@ -200,6 +212,7 @@ namespace SeamlessGo.Data
                 Note = reader.IsDBNull("Note") ? null : reader.GetString("Note"),
                 SourceTransactionID = reader.IsDBNull("SourceTransactionID") ? null : reader.GetString("SourceTransactionID"),
                 SourceOrderID = reader.IsDBNull("SourceOrderID") ? null : reader.GetString("SourceOrderID"),
+                LastModifiedUtc = reader.IsDBNull("LastModifiedUtc") ? DateTime.MinValue : reader.GetDateTime("LastModifiedUtc"),
 
                 // ✅ tinyint -> byte -> int
                 SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus")
@@ -230,6 +243,7 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@Note", SqlDbType.NVarChar).Value = Transaction.Note ?? (object)DBNull.Value;
             command.Parameters.Add("@SourceTransactionID", SqlDbType.NVarChar).Value = Transaction.SourceTransactionID ?? (object)DBNull.Value;
             command.Parameters.Add("@SourceOrderID", SqlDbType.NVarChar).Value = Transaction.SourceOrderID ?? (object)DBNull.Value;
+            command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = Transaction.LastModifiedUtc ?? (object)DBNull.Value;
 
             command.Parameters.Add("@SyncStatus", SqlDbType.NVarChar).Value = Transaction.SyncStatus ?? (object)DBNull.Value;
         }
