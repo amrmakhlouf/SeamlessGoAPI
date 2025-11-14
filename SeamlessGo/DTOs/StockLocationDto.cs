@@ -16,6 +16,5 @@
         public int? CountryID { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedByUserID { get; set; }
-        public byte? SyncStatus { get; set; }
     }
 }

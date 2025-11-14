@@ -82,7 +82,6 @@ namespace SeamlessGo.Controllers
 
                     IsActive = createCustomerDto.IsActive ,
                     CustomerNote = createCustomerDto.CustomerNote,
-                    SyncStatus = createCustomerDto.SyncStatus
                 };
 
                 var createdCustomer = await _customerRepository.CreateAsync(customer);
@@ -195,7 +194,6 @@ namespace SeamlessGo.Controllers
                 CreatedDate = customer.CreatedDate,
                 IsActive = customer.IsActive,
                 CustomerNote = customer.CustomerNote,
-                SyncStatus = customer.SyncStatus
 
             };
         }

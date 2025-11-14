@@ -21,7 +21,6 @@
         public bool? IsVoided { get; set; }
         public string? Note { get; set; }
         public string? SourceOrderID { get; set; }
-        public int? SyncStatus { get; set; }
         public DateTime? LastModifiedUtc { get; set; }
         public List<CreateOrderLineDto>? OrderLines { get; set; }
     }

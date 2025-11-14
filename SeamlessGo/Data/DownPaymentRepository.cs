@@ -79,11 +79,11 @@ namespace SeamlessGo.Data
             const string sql = @"
     INSERT INTO dbo.DownPayments 
     (DownPaymentID, Amount, ChequeID, CreatedByUserID, CreatedDate, CreatedFromPaymentID, CurrencyID, 
-     CustomerID, PaymentMethod, PaymentStatus, RemainingAmount, RouteID, SyncStatus, UpdatedDate, 
+     CustomerID, PaymentMethod, PaymentStatus, RemainingAmount, RouteID,  UpdatedDate, 
      IsVoided, ClientID, LastModifiedUtc)
     VALUES 
     (@DownPaymentID, @Amount, @ChequeID, @CreatedByUserID, @CreatedDate, @CreatedFromPaymentID, @CurrencyID,
-     @CustomerID, @PaymentMethod, @PaymentStatus, @RemainingAmount, @RouteID, @SyncStatus, @UpdatedDate,
+     @CustomerID, @PaymentMethod, @PaymentStatus, @RemainingAmount, @RouteID,  @UpdatedDate,
      @IsVoided, @ClientID, @LastModifiedUtc);
 ";
 
@@ -154,9 +154,9 @@ namespace SeamlessGo.Data
 
             const string sql = @"
     INSERT INTO dbo.DownPaymentAllocations 
-    (PaymentID, DownPaymentID, AllocatedAmount, SyncStatus)
+    (PaymentID, DownPaymentID, AllocatedAmount )
     VALUES 
-    (@PaymentID, @DownPaymentID, @AllocatedAmount, @SyncStatus);
+    (@PaymentID, @DownPaymentID, @AllocatedAmount);
 ";
 
             using var command = new SqlCommand(sql, connection, transaction);
@@ -164,7 +164,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@PaymentID", SqlDbType.NVarChar).Value = allocation.PaymentID ?? (object)DBNull.Value;
             command.Parameters.Add("@DownPaymentID", SqlDbType.NVarChar).Value = allocation.DownPaymentID ?? (object)DBNull.Value;
             command.Parameters.Add("@AllocatedAmount", SqlDbType.NVarChar).Value = allocation.AllocatedAmount ?? (object)DBNull.Value;
-            command.Parameters.Add("@SyncStatus", SqlDbType.Int).Value = allocation.SyncStatus;
 
             await command.ExecuteScalarAsync();
 
@@ -189,7 +188,6 @@ namespace SeamlessGo.Data
                 PaymentStatus = reader.IsDBNull("PaymentStatus") ? 0 : reader.GetInt32("PaymentStatus"),
                 RemainingAmount = reader.IsDBNull("RemainingAmount") ? null : reader.GetString("RemainingAmount"),
                 RouteID = reader.IsDBNull("RouteID") ? 0 : reader.GetInt32("RouteID"),
-                SyncStatus = reader.IsDBNull("SyncStatus") ? 0 : reader.GetInt32("SyncStatus"),
                 UpdatedDate = reader.IsDBNull("UpdatedDate") ? null : (DateTime?)reader.GetDateTime("UpdatedDate"),
                 IsVoided = reader.IsDBNull("IsVoided") ? false : reader.GetBoolean("IsVoided"),
                 ClientID = reader.IsDBNull("ClientID") ? Guid.Empty : reader.GetGuid("ClientID"),
@@ -211,7 +209,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@PaymentStatus", SqlDbType.Int).Value = downPayment.PaymentStatus ?? (object)DBNull.Value;
             command.Parameters.Add("@RemainingAmount", SqlDbType.NVarChar).Value = downPayment.RemainingAmount ?? (object)DBNull.Value;
             command.Parameters.Add("@RouteID", SqlDbType.Int).Value = downPayment.RouteID ?? (object)DBNull.Value;
-            command.Parameters.Add("@SyncStatus", SqlDbType.Int).Value = downPayment.SyncStatus ?? (object)DBNull.Value;
             command.Parameters.Add("@UpdatedDate", SqlDbType.DateTime2).Value = downPayment.UpdatedDate ?? (object)DBNull.Value;
             command.Parameters.Add("@IsVoided", SqlDbType.Bit).Value = downPayment.IsVoided ?? (object)DBNull.Value;
             command.Parameters.Add("@ClientID", SqlDbType.UniqueIdentifier).Value = downPayment.ClientID ?? (object)DBNull.Value;

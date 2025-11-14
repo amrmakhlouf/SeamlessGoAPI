@@ -216,7 +216,6 @@ namespace SeamlessGo.Data
 
 
 
-                    SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus")
                 };
             }
 
@@ -244,7 +243,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@ImportDuty", SqlDbType.Decimal).Value = stockTransaction.ImportDuty ?? (object)DBNull.Value;
             command.Parameters.Add("@RouteID", SqlDbType.Int).Value = stockTransaction.RouteID ?? (object)DBNull.Value;
             command.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = stockTransaction.CreatedByUserID ?? (object)DBNull.Value;  // FIXED: Int not NVarChar
-            command.Parameters.Add("@SyncStatus", SqlDbType.TinyInt).Value = stockTransaction.SyncStatus ?? (object)DBNull.Value;  // FIXED: TinyInt not NVarChar
             command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = stockTransaction.LastModifiedUtc ?? (object)DBNull.Value;
 
         }

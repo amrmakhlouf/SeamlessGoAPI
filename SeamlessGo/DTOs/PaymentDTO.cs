@@ -14,7 +14,6 @@ namespace SeamlessGo.DTOs
         public int? PaymentMethod { get; set; }
         public int? PaymentStatus { get; set; }
         public int? RouteID { get; set; }
-        public int? SyncStatus { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? IsVoided { get; set; }
         public Guid? ClientID { get; set; }

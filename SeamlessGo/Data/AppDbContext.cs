@@ -17,6 +17,9 @@ namespace SeamlessGo.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Client> Clients { get; set; } // Organization = Client
         public DbSet<StockLocation> StockLocation { get; set; } // Organization = Client
+        public DbSet<Plan> Plans { get; set; } // Organization = Client
+        public DbSet<Sequence> Sequences { get; set; } // Organization = Client
+
 
         public DbSet<SeamlessGo.Models.Route> Routes { get; set; }
 
@@ -44,6 +47,10 @@ namespace SeamlessGo.Data
             {
                 entity.HasKey(e => e.RouteID);
                 entity.ToTable("Routes");
+                entity.HasOne(r => r.Plan)
+     .WithMany() // or .WithMany(p => p.Routes) if Plan has collection
+     .HasForeignKey(r => r.PlanID)
+     .OnDelete(DeleteBehavior.Restrict); 
             });
 
             // StockLocation entity configuration
@@ -51,6 +58,20 @@ namespace SeamlessGo.Data
             {
                 entity.HasKey(e => e.LocationID);
                 entity.ToTable("StockLocations");
+            });
+
+            modelBuilder.Entity<Sequence>(entity =>
+            {
+                // Composite primary key (UserID + TableName)
+                entity.HasKey(e => new { e.UserID, e.TableName });
+
+                entity.ToTable("Sequences"); // or whatever your table name is
+
+                entity.Property(e => e.TableName)
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.TablePrefix)
+                    .HasMaxLength(50);
             });
         }
     }

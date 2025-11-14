@@ -1,4 +1,6 @@
-﻿namespace SeamlessGo.DTOs
+﻿using SeamlessGo.Models;
+
+namespace SeamlessGo.DTOs
 {
     public class RouteDto
     {
@@ -8,5 +10,7 @@
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public byte? Status { get; set; }
+        public Plan Plan { get; set; }
+
     }
 }

@@ -28,7 +28,6 @@ namespace SeamlessGo.Data
                  .Include(u => u.stockLocation) // ✅ Include all StockLocations for the user
                  .Where(u => u.UserName == UserName && u.Password == Password)
                  .ToListAsync();
-
             return users;
 
         }

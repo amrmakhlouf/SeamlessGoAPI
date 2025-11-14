@@ -78,11 +78,11 @@ namespace SeamlessGo.Data
                 INSERT INTO dbo.Orders 
                 (OrderID,CustomerID, OrderDate, UpdatedDate, OrderTypeID, SubTotal, TotalAmount, GrossAmount, 
                  TotalRemainingAmount, DiscountAmount, DiscountPerc, NetAmount, Tax, TaxPerc, 
-                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceOrderID,SyncStatus,LastModifiedUtc)
+                 Status, CreatedByUserID, RouteID, IsVoided, Note, SourceOrderID,LastModifiedUtc)
                 VALUES 
                 (@OrderID,@CustomerID, @OrderDate, @UpdateDate, @OrderTypeID,@SubTotal, @TotalAmount, @GrossAmount,
                  @TotalRemainingAmount, @DiscountAmount, @DiscountPerc, @NetAmount, @Tax, @TaxPerc,
-                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@SyncStatus,@LastModifiedUtc);
+                 @Status, @CreatedByUserID, @RouteID, @IsVoided, @Note, null,@LastModifiedUtc);
                 ";
 
             using var connection = new SqlConnection(_connectionString);
@@ -209,7 +209,6 @@ namespace SeamlessGo.Data
 
 
                 // ✅ tinyint -> byte -> int
-                SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus"),
                 LastModifiedUtc = reader.IsDBNull("LastModifiedUtc") ? DateTime.MinValue : reader.GetDateTime("LastModifiedUtc")
 
             };  
@@ -237,7 +236,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@IsVoided", SqlDbType.Bit).Value = order.IsVoided ?? (object)DBNull.Value;
             command.Parameters.Add("@Note", SqlDbType.NVarChar).Value = order.Note ?? (object)DBNull.Value;
             command.Parameters.Add("@InvoicedID", SqlDbType.NVarChar).Value = order.InvoicedID ?? (object)DBNull.Value;
-            command.Parameters.Add("@SyncStatus", SqlDbType.NVarChar).Value = order.SyncStatus ?? (object)DBNull.Value;
             command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = order.LastModifiedUtc ?? (object)DBNull.Value;
 
         }

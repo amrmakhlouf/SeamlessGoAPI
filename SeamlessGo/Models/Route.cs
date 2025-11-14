@@ -12,5 +12,7 @@ namespace SeamlessGo.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public byte? Status { get; set; }
+        public Plan Plan { get; set; }
+
     }
 }

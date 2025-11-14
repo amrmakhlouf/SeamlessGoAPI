@@ -79,7 +79,6 @@ namespace SeamlessGo.Controllers
                               CountryID              =  user.stockLocation.CountryID,
                               CreatedDate            =  user.stockLocation.CreatedDate,
                               CreatedByUserID        =  user.stockLocation.CreatedByUserID,
-                              SyncStatus             =  user.stockLocation.SyncStatus
                     }
                 });
 

@@ -63,7 +63,6 @@ namespace SeamlessGo.Data
                 PaymentID = reader.IsDBNull("PaymentID") ? null : reader.GetString("PaymentID"),
                 TransactionID = reader.IsDBNull("TransactionID") ? null : reader.GetString("TransactionID"),
                 AllocatedAmount = reader.IsDBNull("AllocatedAmount") ? 0 : reader.GetDecimal("AllocatedAmount"),
-                SyncStatus = reader.IsDBNull("SyncStatus") ? 0 : reader.GetInt32("SyncStatus")
             };
         }
 
@@ -72,7 +71,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@PaymentID", SqlDbType.NVarChar).Value = allocation.PaymentID ?? (object)DBNull.Value;
             command.Parameters.Add("@TransactionID", SqlDbType.NVarChar).Value = allocation.TransactionID ?? (object)DBNull.Value;
             command.Parameters.Add("@AllocatedAmount", SqlDbType.Decimal).Value = allocation.AllocatedAmount;
-            command.Parameters.Add("@SyncStatus", SqlDbType.Int).Value = allocation.SyncStatus;
         }
     }
 

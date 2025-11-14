@@ -47,7 +47,6 @@ namespace SeamlessGo.Controllers
                     PaymentMethod = createPaymentDto.PaymentMethod,
                     PaymentStatus = createPaymentDto.PaymentStatus,
                     RouteID = createPaymentDto.RouteID,
-                    SyncStatus = createPaymentDto.SyncStatus,
                     UpdatedDate = createPaymentDto.UpdatedDate,
                     IsVoided = createPaymentDto.IsVoided,
                     ClientID = createPaymentDto.ClientID,
@@ -62,7 +61,6 @@ namespace SeamlessGo.Controllers
                     {
                         TransactionID = dto.TransactionID,
                         AllocatedAmount = dto.AllocatedAmount,
-                        SyncStatus = dto.SyncStatus
                     }).ToList();
                 }
 
@@ -98,7 +96,6 @@ namespace SeamlessGo.Controllers
                 PaymentMethod = payment.PaymentMethod,
                 PaymentStatus = payment.PaymentStatus,
                 RouteID = payment.RouteID,
-                SyncStatus = payment.SyncStatus,
                 UpdatedDate = payment.UpdatedDate,
                 IsVoided = payment.IsVoided,
                 ClientID = payment.ClientID,
@@ -107,7 +104,6 @@ namespace SeamlessGo.Controllers
                 {
                     TransactionID = allocation.TransactionID,
                     AllocatedAmount = allocation.AllocatedAmount,
-                    SyncStatus = allocation.SyncStatus
                 }).ToList()
             };
         }

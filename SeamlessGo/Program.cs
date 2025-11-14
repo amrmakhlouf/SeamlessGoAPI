@@ -24,6 +24,7 @@ builder.Services.AddScoped<IDownPaymentAllocationsRepository, DownPaymentAllocat
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IRouteRepository, RouteRepository>(); 
 builder.Services.AddScoped<IStockLocationRepository, StockLocationRepository>();
+builder.Services.AddScoped<ISequenceRepository, SequenceRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

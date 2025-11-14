@@ -84,7 +84,6 @@ namespace SeamlessGo.Controllers
                         IsVoided = createOrderDto.IsVoided,
                         InvoicedID = createOrderDto.SourceOrderID,
                         LastModifiedUtc = createOrderDto.LastModifiedUtc,
-                        SyncStatus =createOrderDto.SyncStatus
                     };
 
                     // Convert CreateOrderLineDto to OrderLine

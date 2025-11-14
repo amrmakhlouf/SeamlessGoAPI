@@ -215,7 +215,6 @@ namespace SeamlessGo.Data
                 LastModifiedUtc = reader.IsDBNull("LastModifiedUtc") ? DateTime.MinValue : reader.GetDateTime("LastModifiedUtc"),
 
                 // ✅ tinyint -> byte -> int
-                SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus")
             };
         }
 
@@ -245,7 +244,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@SourceOrderID", SqlDbType.NVarChar).Value = Transaction.SourceOrderID ?? (object)DBNull.Value;
             command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = Transaction.LastModifiedUtc ?? (object)DBNull.Value;
 
-            command.Parameters.Add("@SyncStatus", SqlDbType.NVarChar).Value = Transaction.SyncStatus ?? (object)DBNull.Value;
         }
     }
 }

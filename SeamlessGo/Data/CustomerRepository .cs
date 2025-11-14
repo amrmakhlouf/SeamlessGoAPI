@@ -60,10 +60,10 @@ namespace SeamlessGo.Data
                 const string sql = @"
 INSERT INTO dbo.Customers 
 (CustomerID, CustomerCode, FullName,  CityID, Address, Email, PhoneNumber1, PhoneNumber2, Latitude,Longitude,
- CustomerTypeID, CustomerBalance, AccountLimit, CustomerGroupID, CreatedByUserID, CreatedDate, IsActive, CustomerNote,SyncStatus)
+ CustomerTypeID, CustomerBalance, AccountLimit, CustomerGroupID, CreatedByUserID, CreatedDate, IsActive, CustomerNote)
 VALUES 
 (@CustomerID, @CustomerCode, @FullName,  @City, @Address, @Email, @PhoneNumber1, @PhoneNumber2,@Latitude,@Longitude,
- @CustomerTypeID, @CustomerBalance, @AccountLimit, @CustomerGroupID, @UserID, @CreatedDate, @IsActive, @CustomerNote,@SyncStatus);";
+ @CustomerTypeID, @CustomerBalance, @AccountLimit, @CustomerGroupID, @UserID, @CreatedDate, @IsActive, @CustomerNote);";
 
                 using var connection = new SqlConnection(_connectionString);
                 using var command = new SqlCommand(sql, connection);
@@ -205,7 +205,6 @@ VALUES
                 CreatedDate = reader.IsDBNull("CreatedDate") ? null : reader.GetDateTime("CreatedDate"),
                 IsActive = reader.IsDBNull("IsActive") ? null : reader.GetBoolean("IsActive"),
                 CustomerNote = reader.IsDBNull("CustomerNote") ? null : reader.GetString("CustomerNote"),
-                                SyncStatus = reader.IsDBNull("SyncStatus") ? null : (int?)reader.GetByte("SyncStatus")
 
             };
         }
@@ -230,7 +229,6 @@ VALUES
             command.Parameters.Add("@CreatedDate", SqlDbType.DateTime2).Value = customer.CreatedDate ?? (object)DBNull.Value;
             command.Parameters.Add("@IsActive", SqlDbType.Bit).Value = customer.IsActive ?? (object)DBNull.Value;
             command.Parameters.Add("@CustomerNote", SqlDbType.NVarChar, -1).Value = customer.CustomerNote ?? (object)DBNull.Value;
-            command.Parameters.Add("@SyncStatus", SqlDbType.Int).Value = customer.SyncStatus ?? (object)DBNull.Value;
 
         }
     }

@@ -51,7 +51,6 @@ namespace SeamlessGo.Controllers
                     PaymentStatus = createDownPaymentDto.PaymentStatus,
                     RemainingAmount = createDownPaymentDto.RemainingAmount,
                     RouteID = createDownPaymentDto.RouteID,
-                    SyncStatus = createDownPaymentDto.SyncStatus,
                     UpdatedDate = createDownPaymentDto.UpdatedDate,
                     IsVoided = createDownPaymentDto.IsVoided,
                     ClientID = createDownPaymentDto.ClientID,
@@ -66,7 +65,6 @@ namespace SeamlessGo.Controllers
                     {
                         PaymentID = dto.PaymentID,
                         AllocatedAmount = dto.AllocatedAmount,
-                        SyncStatus = dto.SyncStatus
                     }).ToList();
                 }
 
@@ -103,7 +101,6 @@ namespace SeamlessGo.Controllers
                 PaymentStatus = downPayment.PaymentStatus,
                 RemainingAmount = downPayment.RemainingAmount,
                 RouteID = downPayment.RouteID,
-                SyncStatus = downPayment.SyncStatus,
                 UpdatedDate = downPayment.UpdatedDate,
                 IsVoided = downPayment.IsVoided,
                 ClientID = downPayment.ClientID,
@@ -112,7 +109,6 @@ namespace SeamlessGo.Controllers
                 {
                     PaymentID = allocation.PaymentID,
                     AllocatedAmount = allocation.AllocatedAmount,
-                    SyncStatus = allocation.SyncStatus
                 }).ToList()
             };
         }

@@ -4,6 +4,5 @@
     {
         public string? TransactionID { get; set; }
         public decimal? AllocatedAmount { get; set; }
-        public int? SyncStatus { get; set; }
     }
 }

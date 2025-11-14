@@ -63,7 +63,6 @@ namespace SeamlessGo.Data
                 PaymentID = reader.IsDBNull("PaymentID") ? null : reader.GetString("PaymentID"),
                 DownPaymentID = reader.IsDBNull("DownPaymentID") ? null : reader.GetString("DownPaymentID"),
                 AllocatedAmount = reader.IsDBNull("AllocatedAmount") ? null : reader.GetString("AllocatedAmount"),
-                SyncStatus = reader.IsDBNull("SyncStatus") ? 0 : reader.GetInt32("SyncStatus")
             };
         }
 
@@ -72,7 +71,6 @@ namespace SeamlessGo.Data
             command.Parameters.Add("@PaymentID", SqlDbType.NVarChar).Value = allocation.PaymentID ?? (object)DBNull.Value;
             command.Parameters.Add("@DownPaymentID", SqlDbType.NVarChar).Value = allocation.DownPaymentID ?? (object)DBNull.Value;
             command.Parameters.Add("@AllocatedAmount", SqlDbType.NVarChar).Value = allocation.AllocatedAmount ?? (object)DBNull.Value;
-            command.Parameters.Add("@SyncStatus", SqlDbType.Int).Value = allocation.SyncStatus;
         }
     }
 }

@@ -86,7 +86,6 @@ namespace SeamlessGo.Controllers
 
                     CreatedByUserID = createStockTransactionDto.CreatedByUserID,
 
-                    SyncStatus = createStockTransactionDto.SyncStatus
 
                 };
 
@@ -234,7 +233,6 @@ namespace SeamlessGo.Controllers
 
                 CreatedByUserID = StockTransaction.CreatedByUserID,
 
-                SyncStatus = StockTransaction.SyncStatus,
 
                 StockTransactionLine = StockTransaction.StockTransactionLine?.Select(line => new StockTransactionLinesDTO
                 {

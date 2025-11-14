@@ -84,7 +84,6 @@ namespace SeamlessGo.Controllers
                         Note = createTransactionDto.Note,
                         IsVoided = createTransactionDto.IsVoided,
                         SourceTransactionID = createTransactionDto.SourceTransactionID,
-                        SyncStatus=createTransactionDto.SyncStatus,
                         LastModifiedUtc=createTransactionDto.LastModifiedUtc
                     };
 
@@ -228,7 +227,6 @@ namespace SeamlessGo.Controllers
                     Note = Transaction.Note,
                     SourceTransactionID = Transaction.SourceTransactionID,
                     SourceOrderID = Transaction.SourceOrderID,
-                    SyncStatus = Transaction.SyncStatus,
                     LastModifiedUtc=Transaction.LastModifiedUtc,
                     TransactionLine = Transaction.TransactionLine?.Select(line => new TransactionLineDTO
                     {
