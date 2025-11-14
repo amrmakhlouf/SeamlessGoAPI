@@ -98,10 +98,8 @@ namespace SeamlessGo.Data
                 // Execute INSERT - no need to get SCOPE_IDENTITY
                 await command.ExecuteNonQueryAsync();
 
-                // Use the OrderID that user provided (already in order.OrderID)
                 string newOrderId = payment.PaymentID;
 
-                // Insert order lines if provided
                 if (paymentallocation != null && paymentallocation.Any())
                 {
                     foreach (var line in paymentallocation)

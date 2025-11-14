@@ -24,8 +24,8 @@ namespace SeamlessGo.Data
         {
 
             var users = await _context.Users
-                 .Include(u => u.client) // ✅ Include Client
-                 .Include(u => u.stockLocation) // ✅ Include all StockLocations for the user
+                 .Include(u => u.client) 
+                 .Include(u => u.stockLocation) 
                  .Where(u => u.UserName == UserName && u.Password == Password)
                  .ToListAsync();
             return users;

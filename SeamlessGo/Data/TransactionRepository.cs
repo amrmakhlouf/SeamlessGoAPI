@@ -96,18 +96,14 @@ namespace SeamlessGo.Data
 
             try
             {
-                // Insert Transaction with user-provided TransactionID
                 using var command = new SqlCommand(sql, connection, transaction);
 
                 AddTransactionParameters(command, Transaction);
 
-                // Execute INSERT - no need to get SCOPE_IDENTITY
                 await command.ExecuteNonQueryAsync();
 
-                // Use the TransactionID that user provided (already in Transaction.TransactionID)
                 string newTransactionId = Transaction.TransactionID;
 
-                // Insert Transaction lines if provided
                 if (TransactionLines != null && TransactionLines.Any())
                 {
                     foreach (var line in TransactionLines)

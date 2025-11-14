@@ -13,33 +13,31 @@ namespace SeamlessGo.Data
         {
         }
 
-        // 👇 These map your models to database tables
         public DbSet<User> Users { get; set; }
-        public DbSet<Client> Clients { get; set; } // Organization = Client
-        public DbSet<StockLocation> StockLocation { get; set; } // Organization = Client
-        public DbSet<Plan> Plans { get; set; } // Organization = Client
-        public DbSet<Sequence> Sequences { get; set; } // Organization = Client
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<StockLocation> StockLocation { get; set; }
+        public DbSet<Plan> Plans { get; set; } 
+        public DbSet<Sequence> Sequences { get; set; }
 
 
         public DbSet<SeamlessGo.Models.Route> Routes { get; set; }
 
-        // Optional: override OnModelCreating to configure relationships
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // User to Client relationship (one-to-many: one client can have many users)
+       
             modelBuilder.Entity<User>()
                 .HasOne(u => u.client)
                 .WithMany()
                 .HasForeignKey(u => u.ClientID);
 
-            // User to StockLocation relationship (one-to-one)
-            // ✅ StockLocation has the FK (DriverUserID) pointing to User
+         
             modelBuilder.Entity<User>()
-                .HasOne(u => u.stockLocation) // ✅ User has one StockLocation
-                .WithOne() // ✅ StockLocation has one User (no navigation property in StockLocation)
-                .HasForeignKey<StockLocation>(sl => sl.DriverUserID) // ✅ FK is in StockLocation table
+                .HasOne(u => u.stockLocation) 
+                .WithOne() 
+                .HasForeignKey<StockLocation>(sl => sl.DriverUserID) // 
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Route entity configuration
@@ -62,10 +60,9 @@ namespace SeamlessGo.Data
 
             modelBuilder.Entity<Sequence>(entity =>
             {
-                // Composite primary key (UserID + TableName)
                 entity.HasKey(e => new { e.UserID, e.TableName });
 
-                entity.ToTable("Sequences"); // or whatever your table name is
+                entity.ToTable("Sequences"); 
 
                 entity.Property(e => e.TableName)
                     .HasMaxLength(255);
