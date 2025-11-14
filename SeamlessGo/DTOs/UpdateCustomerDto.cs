@@ -4,7 +4,7 @@
     {
         public string? CustomerCode { get; set; }
         public string? FullName { get; set; }
-        public int? City { get; set; }
+        public int? CityID { get; set; }
         public string? Address { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber1 { get; set; }

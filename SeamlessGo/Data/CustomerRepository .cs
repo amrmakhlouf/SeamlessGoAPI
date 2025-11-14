@@ -190,7 +190,7 @@ VALUES
                 CustomerID = reader.IsDBNull("CustomerID") ? null : reader.GetGuid("CustomerID").ToString(),
                 CustomerCode = reader.IsDBNull("CustomerCode") ? null : reader.GetString("CustomerCode"),
                 FullName = reader.IsDBNull("FullName") ? null : reader.GetString("FullName"),
-                City = reader.IsDBNull("CityID") ? null : reader.GetInt32("CityID"),
+                CityID = reader.IsDBNull("CityID") ? null : reader.GetInt32("CityID"),
                 Address = reader.IsDBNull("Address") ? null : reader.GetString("Address"),
                 Email = reader.IsDBNull("Email") ? null : reader.GetString("Email"),
                 PhoneNumber1 = reader.IsDBNull("PhoneNumber1") ? null : reader.GetString("PhoneNumber1"),
@@ -214,7 +214,7 @@ VALUES
             command.Parameters.Add("@CustomerID", SqlDbType.NVarChar, 50).Value = customer.CustomerID ?? (object)DBNull.Value;
             command.Parameters.Add("@CustomerCode", SqlDbType.NVarChar, 50).Value = customer.CustomerCode ?? (object)DBNull.Value;
             command.Parameters.Add("@FullName", SqlDbType.NVarChar, 100).Value = customer.FullName ?? (object)DBNull.Value;
-            command.Parameters.Add("@City", SqlDbType.Int, 100).Value = customer.City ?? (object)DBNull.Value;
+            command.Parameters.Add("@City", SqlDbType.Int, 100).Value = customer.CityID ?? (object)DBNull.Value;
             command.Parameters.Add("@Address", SqlDbType.NVarChar, 200).Value = customer.Address ?? (object)DBNull.Value;
             command.Parameters.Add("@Email", SqlDbType.NVarChar, 255).Value = customer.Email ?? (object)DBNull.Value;
             command.Parameters.Add("@PhoneNumber1", SqlDbType.NVarChar, 20).Value = customer.PhoneNumber1 ?? (object)DBNull.Value;

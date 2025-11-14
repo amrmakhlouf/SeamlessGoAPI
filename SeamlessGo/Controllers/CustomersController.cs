@@ -66,7 +66,7 @@ namespace SeamlessGo.Controllers
                     CustomerCode = createCustomerDto.CustomerCode,
                     FullName = createCustomerDto.FullName,
     
-                    City = createCustomerDto.City,
+                    CityID = createCustomerDto.CityID,
                     Address = createCustomerDto.Address,
                     Email = createCustomerDto.Email,
                     PhoneNumber1 = createCustomerDto.PhoneNumber1,
@@ -79,7 +79,6 @@ namespace SeamlessGo.Controllers
                     CustomerGroupID = createCustomerDto.CustomerGroupID,
                     CreatedByUserID = createCustomerDto.CreatedByUserID,
                     CreatedDate = createCustomerDto.CreatedDate,
-
                     IsActive = createCustomerDto.IsActive ,
                     CustomerNote = createCustomerDto.CustomerNote,
                 };
@@ -105,7 +104,7 @@ namespace SeamlessGo.Controllers
                 {
                     CustomerCode = updateCustomerDto.CustomerCode,
                     FullName = updateCustomerDto.FullName,
-                    City = updateCustomerDto.City,
+                    CityID = updateCustomerDto.CityID,
                     Address = updateCustomerDto.Address,
                     Email = updateCustomerDto.Email,
                     PhoneNumber1 = updateCustomerDto.PhoneNumber1,
@@ -181,11 +180,13 @@ namespace SeamlessGo.Controllers
                 CustomerID = customer.CustomerID,
                 CustomerCode = customer.CustomerCode,
                 FullName = customer.FullName,
-                City = customer.City,
+                CityID = customer.CityID,
                 Address = customer.Address,
                 Email = customer.Email,
                 PhoneNumber1 = customer.PhoneNumber1,
                 PhoneNumber2 = customer.PhoneNumber2,
+                Latitude = customer.Latitude,
+                Longitude = customer.Longitude,
                 CustomerTypeID = customer.CustomerTypeID,
                 CustomerBalance = customer.CustomerBalance,
                 AccountLimit = customer.AccountLimit,
