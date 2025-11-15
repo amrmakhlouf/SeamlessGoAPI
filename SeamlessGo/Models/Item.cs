@@ -19,5 +19,6 @@
 
         // Navigation property
         public List<ItemPack>? ItemPacks { get; set; }
+        public List<ItemImage>? ItemImages { get; set; }
     }
 }

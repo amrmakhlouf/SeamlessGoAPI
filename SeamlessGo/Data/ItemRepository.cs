@@ -66,7 +66,7 @@ namespace SeamlessGo.Data
             return item;
         }
 
-        public async Task<Item> CreateAsync(Item item, List<ItemPack>? itemPacks)
+        public async Task<Item> CreateAsync(Item item, List<ItemPack>? itemPacks, List<ItemImage>? itemImages)
         {
             const string sql = @"
                 INSERT INTO dbo.Items 
@@ -107,7 +107,14 @@ namespace SeamlessGo.Data
                         await CreateItemPackAsync(connection, transaction, pack);
                     }
                 }
-
+                if (itemImages != null && itemImages.Any())
+                {
+                    foreach (var image in itemImages)
+                    {
+                        image.ItemID = itemId;  // Assign user-provided ItemID
+                        await CreateItemImageAsync(connection, transaction, image);
+                    }
+                }
                 transaction.Commit();
                 return item;
             }
@@ -116,6 +123,27 @@ namespace SeamlessGo.Data
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        private async Task CreateItemImageAsync(SqlConnection connection, SqlTransaction transaction, ItemImage image)
+        {
+            const string sql = @"
+                INSERT INTO dbo.ItemImages 
+                (ItemImageID, ItemID, FileName, IsPrimary, SortOrder, LastModifiedUtc)
+                VALUES 
+                (@ItemImageID, @ItemID, @FileName, @IsPrimary, @SortOrder, @LastModifiedUtc);";
+
+            using var command = new SqlCommand(sql, connection, transaction);
+
+            // Use user-provided ItemImageID (no GUID generation)
+            command.Parameters.Add("@ItemImageID", SqlDbType.NVarChar, 50).Value = image.ItemImageID ?? (object)DBNull.Value;
+            command.Parameters.Add("@ItemID", SqlDbType.NVarChar, 50).Value = image.ItemID ?? (object)DBNull.Value;
+            command.Parameters.Add("@FileName", SqlDbType.NVarChar, 260).Value = image.FileName ?? (object)DBNull.Value;
+            command.Parameters.Add("@IsPrimary", SqlDbType.Bit).Value = image.IsPrimary;
+            command.Parameters.Add("@SortOrder", SqlDbType.Int).Value = image.SortOrder;
+            command.Parameters.Add("@LastModifiedUtc", SqlDbType.DateTime2).Value = (image.LastModifiedUtc == default) ? DateTime.UtcNow : image.LastModifiedUtc;
+
+            await command.ExecuteNonQueryAsync();
         }
 
         private async Task CreateItemPackAsync(SqlConnection connection, SqlTransaction transaction, ItemPack pack)

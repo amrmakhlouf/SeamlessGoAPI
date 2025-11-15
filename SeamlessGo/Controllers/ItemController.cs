@@ -5,7 +5,7 @@ using SeamlessGo.DTOs;
 using SeamlessGo.Models;
 namespace SeamlessGo.Controllers
 {
- [ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
@@ -62,7 +62,6 @@ namespace SeamlessGo.Controllers
                 var item = new Item
                 {
                     ItemID = createItemDTO.ItemID,
-
                     ItemName = createItemDTO.ItemName,
                     ItemCode = createItemDTO.ItemCode,
                     ItemDescription = createItemDTO.ItemDescription,
@@ -82,7 +81,7 @@ namespace SeamlessGo.Controllers
                 {
                     itemPacks = createItemDTO.ItemPacks.Select(DTO => new ItemPack
                     {
-                        ItemPackID=DTO.ItemPackID,
+                        ItemPackID = DTO.ItemPackID,
                         Equivalency = DTO.Equivalency,
                         IsWeightable = DTO.IsWeightable,
                         UnitID = DTO.UnitID,
@@ -94,13 +93,29 @@ namespace SeamlessGo.Controllers
                     }).ToList();
                 }
 
+                List<ItemImage>? itemImages = null;
+                if (createItemDTO.ItemImages != null && createItemDTO.ItemImages.Any())
+                {
+                    itemImages = createItemDTO.ItemImages.Select(DTO => new ItemImage
+                    {
+                        ItemImageID = DTO.ItemImageID,
+                        ItemID = DTO.ItemID,
+                        FileName = DTO.FileName,
+                        IsPrimary = DTO.IsPrimary,
+                        SortOrder = DTO.SortOrder,
+                        LastModifiedUtc = DTO.LastModifiedUtc
+                    }).ToList();
+                }
                 // Create item with packs
-                var createdItem = await _itemRepository.CreateAsync(item, itemPacks);
-                
+                var createdItem = await _itemRepository.CreateAsync(item, itemPacks, itemImages);
+
                 // Get complete item with packs
                 var itemWithPacks = await _itemRepository.GetByIdWithPacksAsync(createdItem.ItemID);
 
                 return CreatedAtAction(nameof(GetItem), new { id = createdItem.ItemID }, MapItemToDTO(itemWithPacks!));
+
+
+
             }
             catch (Exception ex)
             {
@@ -137,8 +152,18 @@ namespace SeamlessGo.Controllers
                     Cost = pack.Cost,
                     Enabled = pack.Enabled,
                     ImagePath = pack.ImagePath
+                }).ToList(),
+                ItemImages = item.ItemImages?.Select(img => new ItemImageDTO
+                {
+                    ItemImageID = img.ItemImageID,
+                    ItemID = img.ItemID,
+                    FileName = img.FileName,
+                    IsPrimary = img.IsPrimary,
+                    SortOrder = img.SortOrder,
+                    LastModifiedUtc = img.LastModifiedUtc
                 }).ToList()
             };
         }
+
     }
 }

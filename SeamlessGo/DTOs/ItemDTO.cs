@@ -16,5 +16,6 @@
         public int? ItemTypeID { get; set; }
         public bool? IsStockTracked { get; set; }
         public List<ItemPackDTO>? ItemPacks { get; set; }
+        public List<ItemImageDTO>? ItemImages { get; set; }
     }
 }

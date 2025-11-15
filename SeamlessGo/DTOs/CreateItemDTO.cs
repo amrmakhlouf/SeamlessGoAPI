@@ -3,7 +3,6 @@
     public class CreateItemDTO
     {
         public string? ItemID { get; set; }
-
         public string? ItemName { get; set; }
         public string? ItemCode { get; set; }
         public string? ItemDescription { get; set; }
@@ -19,5 +18,6 @@
 
         // Item packs to create with the item
         public List<CreateItemPackDTO>? ItemPacks { get; set; }
+        public List<CreateItemImageDTO>? ItemImages { get; set; }
     }
 }
